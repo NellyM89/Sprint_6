@@ -8,17 +8,16 @@ import org.junit.runners.Parameterized;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 @RunWith(Parameterized.class)
-public class LionClassParamTest {
+public class LionClassParamPositiveTest {
 
     private final String sex;
     private final boolean expected;
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
     Feline feline = new Feline();
 
-    public LionClassParamTest(String sex, boolean expected) {
+    public LionClassParamPositiveTest(String sex, boolean expected) {
         this.sex = sex;
         this.expected = expected;
     }
@@ -27,21 +26,21 @@ public class LionClassParamTest {
     public static Object[][] getSexData() {
         return new Object[][]{
                 {"Самец", true},
-                {"Самка", false},
-                {"Оно", false}
+                {"Самка", false}
         };
     }
 
     @Test
     public void createLionMaleTest() throws Exception {
-        try {
-            Lion lion = new Lion(sex, feline);
-            assertEquals(expected, lion.doesHaveMane());
-        } catch (Exception error) {
-            thrown.expect(Exception.class);
-            thrown.expectMessage((equalTo("Используйте допустимые значения пола животного - самец или самка")));
-            Lion lion = new Lion("Оно", feline);
-            thrown = ExpectedException.none();
-        }
+        Lion lion = new Lion(sex, feline);
+        assertEquals(expected, lion.doesHaveMane());
+    }
+
+    @Test
+    public void createLionInvalidSexTest() throws Exception {
+        String invalidSex = "Неизвестный пол";
+        assertThrows(Exception.class, () -> {
+            Lion lion = new Lion(invalidSex, feline);
+        });
     }
 }

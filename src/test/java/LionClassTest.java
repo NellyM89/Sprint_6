@@ -18,12 +18,6 @@ public class LionClassTest {
     Feline feline;
 
     @Test
-    public void doesHaveManeTest() throws Exception {
-        Lion lion = new Lion("Самец", feline);
-        assertTrue(lion.doesHaveMane());
-    }
-
-    @Test
     public void getKittensTest() throws Exception {
         Lion lion = new Lion("Самец", feline);
         Mockito.when(feline.getKittens()).thenReturn(1);
